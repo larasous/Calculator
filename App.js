@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, SafeAreaView, View } from 'react-native';
 
-import Button from './componentes/Button'
-import Display from './componentes/Display';
+import Button from './src/componentes/Button'
+import Display from './src/componentes/Display';
 
 const initialState = {
   displayValue: '0',
