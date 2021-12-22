@@ -13,52 +13,67 @@ const initialState = {
 }
 
 export default class App extends Component {
-  
+  { /* Iniciando o estado inicial */ }
   state = { ...initialState }
-
+  
+  { /* Receber a entrada */ }
   addDigit = n => {
-    
+    { /* Verificar os casos para limpar o display: quando for digitado algum valor diferente de 0, ou quando for chamado a função clearMemory  */ }
     const clearDisplay = this.state.displayValue === '0' 
       || this.state.clearDisplay
     
+    { /* Verificação do ponto (.), permitir 1 ponto por valor */ }
     if(n === '.' &&  !clearDisplay && this.state.displayValue.includes('.')) {
       return
     }
-
+    { /* IndexValue é valor que está no display, se precisar limpar o display, o valor fica vazio */ }
     const indexValue = clearDisplay ? '' : this.state.displayValue
+    { /* Concatenar os valores */ }
     const displayValue = indexValue + n
-
+    { /* Mostrar o valor no display */ }
     this.setState({ displayValue, clearDisplay: false })
 
     if(n !== '.'){
+      { /* Converte o valor para float */ }
       const newValue = parseFloat(displayValue)
+      { /* Pegar os valores do array definido no estado inicial e setando para um novo array */ }
       const values = [...this.state.values]
+      { /* Seta o valor do tipo float no novo array values */ }
       values[this.state.index] = newValue
+      { /* Alterando o estado */ }
       this.setState({ values })
     }
   }
 
   clearMemory = () => {
+    { /* Restaurando para o estado inicial */ }
     this.setState({ ...initialState })
   }
 
   setOperation = operation => {
+    { /* Caso inicial, quando o indíce é 0 */ }
     if(this.state.index === 0){
-      
+      { /* Setando o estado, mudando o valor de index para 1, que será armazenado o próximo valor, limpando o display */ }
       this.setState({ operation, index: 1, clearDisplay: true })
-
+    
+      { /* Quando o índice é 1 */ }
     } else {
-      
+      { /* Verificar se a operação é de igual */ }
       const equals = operation === '='
+      { /* Pegar os valores do array definido no estado inicial e setando para um novo array */ }
       const values = [...this.state.values]
       
       try {
+        { /* Realiza a operação, e armazena na posição 0 do array criado acima */ }
         values[0] = eval(`${values[0]} ${this.state.operation} ${values[1]}`)
       } catch (e) {
+        { /* Quando o operation for "=", o eval apresentará um erro */ }
         values[0] = this.state.values[0]
       }
-
+      { /* Sempre que for setado uma operação, o valor da posição 1 é zerado, para realizar outras operações */ }
       values[1] = 0
+      
+      { /* Alterando o estado, mostrando na tela o resultado */ }
       this.setState({
         displayValue: `${values[0]}`,
         operation: equals ? null : operation,
@@ -66,6 +81,7 @@ export default class App extends Component {
         clearDisplay: true,
         values
       })
+      
     }
   }
   render() {
